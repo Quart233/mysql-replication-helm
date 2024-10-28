@@ -4,6 +4,19 @@
     "version": "2.0.0",
     "tasks": [
         {
+            "label": "Helm: Configmap",
+            "type": "shell",
+            "command": "helm",
+            "args": [
+                "template",
+                "-s",
+                "templates/configmap.yaml",
+                "--release-name",
+                "foo-mysql",
+                "."
+            ]
+        },
+        {
             "label": "Helm: Statefulset",
             "type": "shell",
             "command": "helm",

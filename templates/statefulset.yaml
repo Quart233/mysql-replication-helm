@@ -31,6 +31,10 @@ spec:
             path: /etc/localtime
             type: 'File'
           name: host-time
+        
+        - name: entrypoint
+          configMap:
+            name: {{ .Release.Name }}-entrypoint
 
       # 容器组
       containers:
@@ -61,6 +65,9 @@ spec:
             - name: data
               readOnly: false
               mountPath: /var/lib/mysql
+            - name: entrypoint
+              mountPath: /entrypoint.sh
+              subPath: entrypoint.sh
 
   # 持久卷申领模版
   volumeClaimTemplates:

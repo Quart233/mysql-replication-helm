@@ -27,8 +27,8 @@ spec:
 
       volumes:
         - hostPath:
-          path: /etc/localtime
           name: host-time
+            path: /etc/localtime
 
       containers:
         - name: mysql

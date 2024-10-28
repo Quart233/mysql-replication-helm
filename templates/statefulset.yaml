@@ -21,23 +21,28 @@ spec:
   template:
     metadata:
       labels:
-        {{- include "mysql-replication.selectorLabels" . | nindent 8 }}
+        {{- include "mysql-replication.labels" . | nindent 8 }}
     spec:
       terminationGracePeriodSeconds: 10
 
+      # 卷定义
       volumes:
         - hostPath:
           name: host-time
             path: /etc/localtime
 
+      # 容器组
       containers:
         - name: mysql
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          
+          # 容器端口
           ports:
             - name: mysql
-              containerPort: {{ .Values.service.port }}
+              containerPort: 3306
               protocol: TCP
-          
+
+          # 环境变量 
           env:
             - name: MYSQL_ROOT_PASSWORD
               valueFrom:
@@ -45,6 +50,7 @@ spec:
                   name: {{ .Release.Name }}-root
                   key: password
 
+          # 持久卷挂载
           volumeMounts:
             - name: host-time
               mountPath: /etc/localtime
@@ -53,6 +59,7 @@ spec:
               readOnly: false
               mountPath: /var/lib/mysql
 
+  # 持久卷申领模版
   volumeClaimTemplates:
   - metadata:
       name: data

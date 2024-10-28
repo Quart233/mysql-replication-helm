@@ -66,7 +66,7 @@ spec:
               readOnly: false
               mountPath: /var/lib/mysql
             - name: entrypoint
-              mountPath: /entrypoint.sh
+              mountPath: /usr/local/bin/docker-entrypoint.sh
               subPath: entrypoint
               readOnly: true
 

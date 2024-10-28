@@ -24,6 +24,12 @@ spec:
         {{- include "mysql-replication.selectorLabels" . | nindent 8 }}
     spec:
       terminationGracePeriodSeconds: 10
+
+      volumes:
+        - hostPath:
+          path: /etc/localtime
+          name: host-time
+
       containers:
         - name: mysql
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
@@ -39,10 +45,10 @@ spec:
                   name: {{ .Release.Name }}-root
                   key: password
 
-          {{- with .Values.volumeMounts }}
           volumeMounts:
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
+            - name: host-time
+              mountPath: /etc/localtime
+              readOnly: true
             - name: data
               readOnly: false
               mountPath: /var/lib/mysql

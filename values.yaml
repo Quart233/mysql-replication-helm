@@ -52,13 +52,6 @@ mysql:
   root: root
   port: 3306
 
-
-# Additional volumeMounts on the output Deployment definition.
-volumeMounts:
-  - name: host-time
-    mountPath: /etc/localtime
-    readOnly: true
-
 nodeSelector: {}
 
 tolerations: []

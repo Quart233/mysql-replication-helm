@@ -28,8 +28,9 @@ spec:
       # 卷定义
       volumes:
         - hostPath:
-          name: host-time
             path: /etc/localtime
+            type: 'File'
+          name: host-time
 
       # 容器组
       containers:

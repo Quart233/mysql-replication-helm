@@ -67,7 +67,8 @@ spec:
               mountPath: /var/lib/mysql
             - name: entrypoint
               mountPath: /entrypoint.sh
-              subPath: entrypoint.sh
+              subPath: entrypoint
+              readOnly: true
 
   # 持久卷申领模版
   volumeClaimTemplates:

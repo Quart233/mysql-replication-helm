@@ -37,7 +37,7 @@ spec:
         - name: mysql
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
-          command: ["--ignore-db-dir=lost+found"]
+          args: ["--ignore-db-dir=lost+found"]
           
           # 容器端口
           ports:

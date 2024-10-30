@@ -37,7 +37,7 @@ spec:
             name: {{ .Release.Name }}-entrypoint
             defaultMode: 0555
 
-        - name: conf.d
+        - name: conf
           configMap:
             name: {{ .Release.Name }}-config
 
@@ -76,7 +76,7 @@ spec:
               mountPath: /usr/local/bin/docker-entrypoint.sh
               subPath: entrypoint
               readOnly: true
-            - name: conf.d
+            - name: conf
               mountPath: /etc/mysql/conf.d
               readOnly: true
 

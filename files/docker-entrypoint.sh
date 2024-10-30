@@ -377,6 +377,17 @@ _mysql_want_help() {
 	return 1
 }
 
+# write serverid
+mysql_serverid() {
+	conf=/etc/mysql/conf.d/
+    [[ $(cat /etc/hostname) =~ -([0-9]+)$ ]] || return 1      			# 获取主机名不符合 [0-9] 则 return 1
+
+    ordinal=${BASH_REMATCH[1]}                                			# 获取容器编号
+    echo server-id=$((1 + $ordinal)) > $conf/serverid.cnf     			# 写入 server-id
+
+    [[ ${ordinal} -eq 0 ]] || echo log_bin=mysql-bin > $conf/binlog.cnf	# 开启 binlog
+}
+
 _main() {
 	# if command starts with an option, prepend mysqld
 	if [ "${1:0:1}" = '-' ]; then
@@ -386,6 +397,8 @@ _main() {
 	# skip setup if they aren't running mysqld or want an option that stops mysqld
 	if [ "$1" = 'mysqld' ] && ! _mysql_want_help "$@"; then
 		mysql_note "Entrypoint script for MySQL Server ${MYSQL_VERSION} started."
+
+		mysql_serverid
 
 		mysql_check_config "$@"
 		# Load various environment variables

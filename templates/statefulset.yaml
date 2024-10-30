@@ -35,7 +35,7 @@ spec:
         - name: entrypoint
           configMap:
             name: {{ .Release.Name }}-entrypoint
-            defaultMode: 0777
+            defaultMode: 0555
 
       # 容器组
       containers:
@@ -70,7 +70,7 @@ spec:
             - name: entrypoint
               mountPath: /usr/local/bin/docker-entrypoint.sh
               subPath: entrypoint
-              readOnly: false
+              readOnly: true
 
   # 持久卷申领模版
   volumeClaimTemplates:

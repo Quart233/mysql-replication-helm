@@ -78,7 +78,7 @@ spec:
               readOnly: true
             - name: conf
               mountPath: /etc/mysql/conf.d
-              readOnly: true
+              readOnly: false
 
   # 持久卷申领模版
   volumeClaimTemplates:

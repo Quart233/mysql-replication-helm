@@ -5,3 +5,12 @@ metadata:
 data:
   entrypoint: |
     {{- .Files.Get "files/docker-entrypoint.sh" | nindent 4 }}
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-config
+data:
+  base: |
+    {{- .Files.Get "files/base.cnf" | nindent 4 }}

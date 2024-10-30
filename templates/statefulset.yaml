@@ -37,6 +37,11 @@ spec:
             name: {{ .Release.Name }}-entrypoint
             defaultMode: 0555
 
+        - name: conf.d
+          configMap:
+            name: {{ .Release.Name }}-config
+
+
       # 容器组
       containers:
         - name: mysql
@@ -70,6 +75,9 @@ spec:
             - name: entrypoint
               mountPath: /usr/local/bin/docker-entrypoint.sh
               subPath: entrypoint
+              readOnly: true
+            - name: conf.d
+              mountPath: /etc/mysql/conf.d
               readOnly: true
 
   # 持久卷申领模版

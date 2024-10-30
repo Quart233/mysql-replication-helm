@@ -379,7 +379,7 @@ _mysql_want_help() {
 
 # write serverid
 mysql_serverid() {
-	conf=/etc/mysql/conf.d/
+	conf=/etc/mysql/conf.d
     [[ $(cat /etc/hostname) =~ -([0-9]+)$ ]] || return 1      			# 获取主机名不符合 [0-9] 则 return 1
 
     ordinal=${BASH_REMATCH[1]}                                			# 获取容器编号

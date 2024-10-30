@@ -34,3 +34,7 @@ innodb_lock_wait_timeout = 50
 innodb_max_dirty_pages_pct = 90
 innodb_read_io_threads = 4
 innodb_write_io_threads = 4
+
+# GTID
+gtid_mode=ON
+enforce-gtid-consistency=ON

@@ -42,7 +42,6 @@ spec:
           emptyDir:
             medium: Memory
 
-
       # 容器组
       containers:
         - name: mysql
@@ -77,7 +76,7 @@ spec:
               mountPath: /usr/local/bin/docker-entrypoint.sh
               subPath: entrypoint
               readOnly: true
-            - name: base
+            - name: conf
               mountPath: /etc/mysql/conf.d
               readOnly: false
             - name: base

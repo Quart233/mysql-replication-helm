@@ -379,9 +379,6 @@ _mysql_want_help() {
 
 # write serverid
 mysql_serverid() {
-	whoami
-	ls /etc/mysql -al
-
 	conf=/etc/mysql/conf.d
     [[ $(cat /etc/hostname) =~ -([0-9]+)$ ]] || return 1     # 获取主机名不符合 [0-9] 则 return 1
 
@@ -389,7 +386,7 @@ mysql_serverid() {
     echo "[mysqld]" > $conf/serverid.cnf     				 # 写入文件头
     echo "server-id=$((1 + $ordinal))" >> $conf/serverid.cnf # 写入 server-id
 
-	if [[ ${ordinal} -eq 0 ]]; then
+	if [[ ${ordinal} -eq 0 ]]; then							 # 判断容器编号是否为 0
     	echo "[mysqld]" > $conf/binlog.cnf     				 # 写入文件头
 		echo "log_bin=mysql-bin" >> $conf/binlog.cnf		 # 开启 binlog
 	fi
@@ -405,7 +402,8 @@ _main() {
 	if [ "$1" = 'mysqld' ] && ! _mysql_want_help "$@"; then
 		mysql_note "Entrypoint script for MySQL Server ${MYSQL_VERSION} started."
 
-		mysql_serverid
+		# If container is started as root user, write serverid
+		[[ "$(id -u)" = "0" ]] || mysql_serverid
 
 		mysql_check_config "$@"
 		# Load various environment variables

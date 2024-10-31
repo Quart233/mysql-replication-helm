@@ -31,15 +31,16 @@ spec:
             path: /etc/localtime
             type: 'File'
           name: host-time
-        
         - name: entrypoint
           configMap:
             name: {{ .Release.Name }}-entrypoint
             defaultMode: 0555
-
-        - name: conf
+        - name: base
           configMap:
             name: {{ .Release.Name }}-config
+        - name: conf
+          emptyDir:
+            medium: Memory
 
 
       # 容器组
@@ -76,9 +77,13 @@ spec:
               mountPath: /usr/local/bin/docker-entrypoint.sh
               subPath: entrypoint
               readOnly: true
-            - name: conf
+            - name: base
               mountPath: /etc/mysql/conf.d
               readOnly: false
+            - name: base
+              mountPath: /etc/mysql/conf.d/base.cnf
+              subPath: base
+              readOnly: true
 
   # 持久卷申领模版
   volumeClaimTemplates:

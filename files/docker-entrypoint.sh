@@ -379,6 +379,9 @@ _mysql_want_help() {
 
 # write serverid
 mysql_serverid() {
+	whoami
+	ls /etc/mysql -al
+
 	conf=/etc/mysql/conf.d
     [[ $(cat /etc/hostname) =~ -([0-9]+)$ ]] || return 1     # 获取主机名不符合 [0-9] 则 return 1
 

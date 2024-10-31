@@ -384,11 +384,11 @@ mysql_serverid() {
 
     ordinal=${BASH_REMATCH[1]}                              # 获取容器编号
     echo "[mysqld]" > $conf/serverid.cnf     				# 写入文件头
-    echo "server-id=$((1 + $ordinal))" > $conf/serverid.cnf # 写入 server-id
+    echo "server-id=$((1 + $ordinal))" >> $conf/serverid.cnf # 写入 server-id
 
 	if [[ ${ordinal} -eq 0 ]]; then
     	echo "[mysqld]" > $conf/binlog.cnf     				# 写入文件头
-		echo "log_bin=mysql-bin" > $conf/binlog.cnf			# 开启 binlog
+		echo "log_bin=mysql-bin" >> $conf/binlog.cnf			# 开启 binlog
 	fi
 }
 

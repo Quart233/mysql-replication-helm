@@ -19,7 +19,7 @@ spec:
     matchLabels:
       {{- include "mysql-replication.selectorLabels" . | nindent 6 }}
   serviceName: "mysql"
-  replicas: 1
+  replicas: 2
   minReadySeconds: 10 # by default is 0
   template:
     metadata:

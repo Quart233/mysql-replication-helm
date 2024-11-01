@@ -2,10 +2,12 @@ apiVersion: v1
 kind: Service
 metadata:
   name: {{ .Release.Name }}-headless
+
 spec:
-  selector:
-    {{- include "mysql-replication.selectorLabels" . | nindent 8 }}
   clusterIP: None
+  selector:
+    matchLabels:
+      {{- include "mysql-replication.selectorLabels" . | nindent 6 }}
 ---
 apiVersion: apps/v1
 kind: StatefulSet

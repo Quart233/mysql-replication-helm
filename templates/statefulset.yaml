@@ -6,8 +6,7 @@ metadata:
 spec:
   clusterIP: None
   selector:
-    matchLabels:
-      {{- include "mysql-replication.selectorLabels" . | nindent 6 }}
+    {{- include "mysql-replication.selectorLabels" . | nindent 4 }}
 ---
 apiVersion: apps/v1
 kind: StatefulSet

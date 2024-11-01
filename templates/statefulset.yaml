@@ -6,6 +6,7 @@ metadata:
     {{- include "mysql-replication.labels" . | nindent 4 }}
 
 spec:
+  type: ClusterIP
   clusterIP: None
   ports:
     - name: mysql

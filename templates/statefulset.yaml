@@ -14,7 +14,7 @@ kind: StatefulSet
 metadata:
   name: {{ .Release.Name }}
 spec:
-  serviceName: {{ .Release.Name }}
+  serviceName: {{ .Release.Name }}-headless
   selector:
     matchLabels:
       {{- include "mysql-replication.selectorLabels" . | nindent 6 }}

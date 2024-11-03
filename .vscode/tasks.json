@@ -4,7 +4,20 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Helm: Configmap",
+            "label": "helm: service",
+            "type": "shell",
+            "command": "helm",
+            "args": [
+                "template",
+                "-s",
+                "templates/service.yaml",
+                "--release-name",
+                "foo-mysql",
+                "."
+            ]
+        },
+        {
+            "label": "helm: configmap",
             "type": "shell",
             "command": "helm",
             "args": [

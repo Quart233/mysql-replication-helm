@@ -64,7 +64,7 @@ spec:
                   readOnly: false
                   mountPath: /temp
 
-            - name: replication-stop # 恢复主从同步
+            - name: replication-start # 恢复主从同步
               image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
               command: ["mysql", "-h{{ .Release.Name }}.{{ .Release.Name }}", "-uroot", "-p{{ .Values.mysql.root }}", "-e"]
               args:

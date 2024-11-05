@@ -16,6 +16,7 @@ spec:
       ttlSecondsAfterFinished: 86400 # 一天后清理掉任务
       template:
         spec:
+          restartPolicy: Never
           volumes:
             - name: temp
               emptyDir:

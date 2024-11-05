@@ -4,6 +4,19 @@
     "version": "2.0.0",
     "tasks": [
         {
+            "label": "helm: CronJob",
+            "type": "shell",
+            "command": "helm",
+            "args": [
+                "template",
+                "-s",
+                "templates/cronjob.yaml",
+                "--release-name",
+                "foo-mysql",
+                "."
+            ]
+        },
+        {
             "label": "helm: service",
             "type": "shell",
             "command": "helm",

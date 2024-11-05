@@ -1,0 +1,77 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ .Release.Name }}-backup
+  labels:
+    {{- include "mysql-replication.labels" . | nindent 4 }}
+  namespace: {{ $.Release.Namespace }}
+spec:
+  schedule: "* 4 * * *"
+  timeZone: "Asia/Shanghai"
+  jobTemplate:
+    metadata:
+      labels:
+        {{- include "mysql-replication.labels" . | nindent 8 }}
+    spec:
+      ttlSecondsAfterFinished: 86400 # 一天后清理掉任务
+      template:
+        spec:
+          volumes:
+            - name: temp
+              emptyDir:
+                medium: Memory
+        
+        # 任务队列
+        initContainers:
+          - name: replication-stop # 暂停主从同步
+            image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+            command: ["mysql", "-h{{ .Release.Name }}.{{ .Release.Name }}", "-uroot", "-p{{ .Values.mysql.root }}", "-e"]
+            args:
+              - stop slave;
+
+          - name: mysql-dump # 备份数据库到 SQL
+            image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+            command: [
+              "mysqlpump",
+              "--set-gtid-purged=OFF",
+              "--add-drop-table",
+               "-h{{ .Release.Name }}.{{ .Release.Name }}",
+              "-uroot",
+                "-p{{ .Values.mysql.root }}",
+            ]
+            args:
+              - icampus
+              - --result-file=/temp/dump.sql"
+            volumeMounts:
+              - name: temp
+                readOnly: false
+                mountPath: /temp
+
+          - name: mysql-import # 导入 SQL 到数据库
+            image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+            command: ["bash", "-c"]
+            args:
+              - mysql
+              - -h{{ .Release.Name }}.{{ .Release.Name }}
+              - -uroot
+              - -p{{ .Values.mysql.root }}
+              - icampus
+              - <
+              - /temp/dump.sql
+            volumeMounts:
+              - name: temp
+                readOnly: false
+                mountPath: /temp
+
+          - name: replication-stop # 恢复主从同步
+            image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+            command: ["mysql", "-h{{ .Release.Name }}.{{ .Release.Name }}", "-uroot", "-p{{ .Values.mysql.root }}", "-e"]
+            args:
+              - start slave;
+          
+        containers:
+          - name: upload # 备份 SQL
+            image: busybox:latest
+            command: ["echo"]
+            args:
+              - done

@@ -36,7 +36,7 @@ spec:
         - name: entrypoint
           configMap:
             name: {{ .Release.Name }}-entrypoint
-            defaultMode: 0666
+            defaultMode: 0555
         - name: base
           configMap:
             name: {{ .Release.Name }}-config

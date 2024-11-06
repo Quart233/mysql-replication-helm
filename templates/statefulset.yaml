@@ -74,6 +74,9 @@ spec:
             - name: data
               readOnly: false
               mountPath: /var/lib/mysql
+            - name: log
+              readOnly: false
+              mountPath: /var/lib/mysql-log
             - name: entrypoint
               mountPath: /usr/local/bin/docker-entrypoint.sh
               subPath: entrypoint
@@ -90,6 +93,15 @@ spec:
   volumeClaimTemplates:
   - metadata:
       name: data
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: "local-storage"
+      resources:
+        requests:
+          storage: 10Gi
+
+  - metadata:
+      name: log
     spec:
       accessModes: [ "ReadWriteOnce" ]
       storageClassName: "local-storage"

@@ -380,15 +380,20 @@ _mysql_want_help() {
 # write serverid
 mysql_serverid() {
 	conf=/etc/mysql/conf.d
-    [[ $(cat /etc/hostname) =~ -([0-9]+)$ ]] || return 1     # 获取主机名不符合 [0-9] 则 return 1
+    [[ $(cat /etc/hostname) =~ -([0-9]+)$ ]] || return 1 # 获取主机名不符合 [0-9] 则 return 1
 
-    ordinal=${BASH_REMATCH[1]}                               # 获取容器编号
-    echo "[mysqld]" > $conf/serverid.cnf     				 # 写入文件头
-    echo "server-id=$((1 + $ordinal))" >> $conf/serverid.cnf # 写入 server-id
+    ordinal=${BASH_REMATCH[1]}                           # 获取容器编号
+	cat <<- EOF > $conf/serverid.cnf					 # 写入 server-id
+		[mysqld]
+		server-id=$((1 + $ordinal))
+	EOF
 
-	if [[ ${ordinal} -eq 0 ]]; then							 # 判断容器编号是否为 0
-    	echo "[mysqld]" > $conf/binlog.cnf     				 # 写入文件头
-		echo "log_bin=mysql-bin" >> $conf/binlog.cnf		 # 开启 binlog
+	if [[ ${ordinal} -eq 0 ]]; then						 # 判断容器编号是否为 0
+		cat <<- EOF > $conf/binlog.cnf					 # 写入 binlog 配置文件
+			[mysqld]
+			log_bin=/var/lib/mysql-log/mysql-bin
+			expire_logs_days=7
+		EOF
 	fi
 }
 

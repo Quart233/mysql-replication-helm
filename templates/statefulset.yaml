@@ -25,6 +25,8 @@ spec:
       labels:
         {{- include "mysql-replication.labels" . | nindent 8 }}
     spec:
+      securityContext:
+        fsGroup: 999
       terminationGracePeriodSeconds: 10
 
       # 卷定义

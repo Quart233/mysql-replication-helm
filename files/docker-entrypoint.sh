@@ -397,7 +397,7 @@ mysql_serverid() {
 	else
 		cat <<- EOF > $conf/relay.cnf					 # 写入 relaylog 配置文件
 			[mysqld]
-			relay_log_basename=/var/lib/mysql-log/mysql-relay-bin
+			relay_log=/var/lib/mysql-log/mysql-relay-bin
 		EOF
 	fi
 }

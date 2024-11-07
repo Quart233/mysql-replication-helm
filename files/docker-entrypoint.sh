@@ -394,6 +394,11 @@ mysql_serverid() {
 			log_bin=/var/lib/mysql-log/mysql-bin
 			expire_logs_days=7
 		EOF
+	else
+		cat <<- EOF > $conf/relay.cnf					 # 写入 relaylog 配置文件
+			[mysqld]
+			relay_log_basename=/var/lib/mysql-log/mysql-relay-bin
+		EOF
 	fi
 }
 

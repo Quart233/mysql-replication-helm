@@ -48,7 +48,7 @@ spec:
               ]
               args:
                 - icampus
-                - --result-file=/workspace/dump.sql"
+                - --result-file=/workspace/dump.sql
               # 环境变量 
               env:
                 - name: MYSQL_PWD

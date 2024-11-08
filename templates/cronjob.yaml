@@ -86,7 +86,7 @@ spec:
                       name: {{ .Release.Name }}-root
                       key: password
 
-            - name: mysql-import # 导入 SQL 到数据库
+            - name: mysql-import # 导入 SQL 到备份库
               image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
               command: ["bash", "-c"]
               args:

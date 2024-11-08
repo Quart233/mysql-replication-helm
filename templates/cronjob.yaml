@@ -14,6 +14,7 @@ spec:
         {{- include "mysql-replication.labels" . | nindent 8 }}
     spec:
       ttlSecondsAfterFinished: 86400 # 一天后清理掉任务
+      backoffLimit: 0 # 失败重试次数
       template:
         spec:
           restartPolicy: Never

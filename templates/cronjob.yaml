@@ -67,7 +67,7 @@ spec:
               args:
                 - mysql -h{{ .Release.Name }}-1.{{ .Release.Name }}-headless -uroot
                 - <<- EOF
-                - DROP DATABASE icampus_$(date +%a);
+                - DROP DATABASE IF EXSIST icampus_$(date +%a);
                 - EOF
               # 环境变量 
               env:
@@ -83,7 +83,7 @@ spec:
               args:
                 - mysql -h{{ .Release.Name }}-1.{{ .Release.Name }}-headless -uroot
                 - <<- EOF
-                - CREATE DATABASE icampus_$(date +%a) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+                - CREATE DATABASE IF NOT EXISTS icampus_$(date +%a) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
                 - EOF
               # 环境变量 
               env:

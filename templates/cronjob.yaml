@@ -62,9 +62,10 @@ spec:
 
             - name: mysql-drop # 丢弃备份库
               image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
-              command: ["mysql", "-h{{ .Release.Name }}-1.{{ .Release.Name }}-headless", "-uroot", "-e"]
+              command: ["bash", "-c"]
               args:
-                - drop database icampus_$(date +%A);
+                - mysql -h{{ .Release.Name }}-1.{{ .Release.Name }}-headless -uroot -e
+                - DROP DATABASE icampus_$(date +%A);
               # 环境变量 
               env:
                 - name: MYSQL_PWD
@@ -75,8 +76,9 @@ spec:
 
             - name: mysql-create # 创建备份库
               image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
-              command: ["mysql", "-h{{ .Release.Name }}-1.{{ .Release.Name }}-headless", "-uroot", "-e"]
+              command: ["bash", "-c"]
               args:
+                - mysql -h{{ .Release.Name }}-1.{{ .Release.Name }}-headless -uroot icampus_$(date +%A) -e
                 - CREATE DATABASE icampus_$(date +%A) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
               # 环境变量 
               env:

@@ -64,7 +64,7 @@ spec:
               image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
               command: ["mysql", "-h{{ .Release.Name }}-1.{{ .Release.Name }}-headless", "-uroot", "-e"]
               args:
-                - drop icampus_$(date +%u);
+                - drop database icampus_$(date +%u);
               # 环境变量 
               env:
                 - name: MYSQL_PWD

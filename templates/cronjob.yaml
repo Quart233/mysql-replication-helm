@@ -42,7 +42,6 @@ spec:
               command: [
                 "mysqlpump",
                 "--set-gtid-purged=OFF",
-                "--add-drop-table",
                 "-h{{ .Release.Name }}-1.{{ .Release.Name }}-headless",
                 "-uroot"
               ]

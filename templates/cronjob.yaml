@@ -65,12 +65,7 @@ spec:
               image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
               command: ["bash", "-c"]
               args:
-                - mysql
-                - -h{{ .Release.Name }}-1.{{ .Release.Name }}-headless
-                - -uroot
-                - icampus_$(date +%u)
-                - <
-                - /temp/dump.sql
+                - mysql -h{{ .Release.Name }}-1.{{ .Release.Name }}-headless -uroot icampus_$(date +%u) < /temp/dump.sql
               env:
                 - name: MYSQL_PWD
                   valueFrom:

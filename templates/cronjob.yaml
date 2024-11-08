@@ -61,6 +61,18 @@ spec:
                   readOnly: false
                   mountPath: /workspace
 
+            - name: replication-start # 恢复主从同步
+              image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+              command: ["mysql", "-h{{ .Release.Name }}-1.{{ .Release.Name }}-headless", "-uroot", "-e"]
+              args:
+                - start slave;
+              env:
+                - name: MYSQL_PWD
+                  valueFrom:
+                    secretKeyRef:
+                      name: {{ .Release.Name }}-root
+                      key: password
+
             - name: mysql-drop # 丢弃备份库
               image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
               command: ["bash", "-c"]
@@ -108,18 +120,6 @@ spec:
                 - name: workspace
                   readOnly: true
                   mountPath: /workspace
-
-            - name: replication-start # 恢复主从同步
-              image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
-              command: ["mysql", "-h{{ .Release.Name }}-1.{{ .Release.Name }}-headless", "-uroot", "-e"]
-              args:
-                - start slave;
-              env:
-                - name: MYSQL_PWD
-                  valueFrom:
-                    secretKeyRef:
-                      name: {{ .Release.Name }}-root
-                      key: password
             
           containers:
             - name: upload # 备份 SQL

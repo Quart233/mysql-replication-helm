@@ -77,7 +77,7 @@ spec:
               image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
               command: ["bash", "-c"]
               args:
-                - mysql -h{{ .Release.Name }}-1.{{ .Release.Name }}-headless -uroot -e DROP DATABASE IF EXSIST icampus_$(date +%a);
+                - mysql -h{{ .Release.Name }}-1.{{ .Release.Name }}-headless -uroot -e "DROP DATABASE IF EXSIST icampus_$(date +%a);"
               # 环境变量 
               env:
                 - name: MYSQL_PWD
@@ -90,7 +90,7 @@ spec:
               image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
               command: ["bash", "-c"]
               args:
-                - mysql -h{{ .Release.Name }}-1.{{ .Release.Name }}-headless -uroot -e CREATE DATABASE IF NOT EXISTS icampus_$(date +%a) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+                - mysql -h{{ .Release.Name }}-1.{{ .Release.Name }}-headless -uroot -e "CREATE DATABASE IF NOT EXISTS icampus_$(date +%a) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;"
               # 环境变量 
               env:
                 - name: MYSQL_PWD

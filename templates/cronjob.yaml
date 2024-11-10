@@ -42,6 +42,7 @@ spec:
               image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
               command: [
                 "mysqlpump",
+                "--no-create-db",
                 "--set-gtid-purged=OFF",
                 "-h{{ .Release.Name }}-1.{{ .Release.Name }}-headless",
                 "-uroot"

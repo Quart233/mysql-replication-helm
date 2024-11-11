@@ -48,6 +48,9 @@ mysql:
   root: root
   port: 3306
 
+cronjob:
+  database: foo
+
 nodeSelector: {}
 
 tolerations: []

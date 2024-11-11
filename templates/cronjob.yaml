@@ -64,7 +64,7 @@ spec:
 
             - name: replica-start # 恢复主从同步
               image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
-              command: ["mysql", "-h{{ .Release.Name }}-1.{{ .Release.Name }}-headless"]
+              command: ["mysqladmin", "-h{{ .Release.Name }}-1.{{ .Release.Name }}-headless"]
               args:
                 - start-slave
               env:

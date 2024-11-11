@@ -105,7 +105,7 @@ spec:
               image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
               command: ["bash", "-c"]
               args:
-                - mysql --verbose -h{{ .Release.Name }}-1.{{ .Release.Name }}-headless -uroot {{ .Values.cronjob.database }}_$(date -u +%a) < /workspace/dump.sql
+                - mysql -h{{ .Release.Name }}-1.{{ .Release.Name }}-headless -uroot {{ .Values.cronjob.database }}_$(date -u +%a) < /workspace/dump.sql
               env:
                 - name: MYSQL_PWD
                   valueFrom:

@@ -99,7 +99,8 @@ spec:
                     secretKeyRef:
                       name: {{ .Release.Name }}-root
                       key: password
-
+            
+          containers:
             - name: mysql-import # 导入 SQL 到备份库
               image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
               command: ["bash", "-c"]
@@ -115,10 +116,3 @@ spec:
                 - name: workspace
                   readOnly: true
                   mountPath: /workspace
-            
-          containers:
-            - name: upload # 备份 SQL
-              image: busybox:latest
-              command: ["echo"]
-              args:
-                - done

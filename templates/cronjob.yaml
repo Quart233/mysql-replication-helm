@@ -41,9 +41,9 @@ spec:
             - name: mysql-dump # 备份数据库到 SQL
               image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
               command: [
-                "mysqlpump",
-                "--no-create-db",
+                "mysqldump",
                 "--set-gtid-purged=OFF",
+                "--skip-add-drop-table",
                 "-h{{ .Release.Name }}-1.{{ .Release.Name }}-headless",
                 "-uroot"
               ]

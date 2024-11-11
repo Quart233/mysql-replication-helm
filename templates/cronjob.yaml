@@ -25,7 +25,7 @@ spec:
         
           # 任务队列
           initContainers:
-            - name: replication-stop # 暂停主从同步
+            - name: replica-stop # 暂停主从同步
               image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
               command: ["mysqladmin", "-h{{ .Release.Name }}-1.{{ .Release.Name }}-headless"]
               args:
@@ -62,7 +62,7 @@ spec:
                   readOnly: false
                   mountPath: /workspace
 
-            - name: replication-start # 恢复主从同步
+            - name: replica-start # 恢复主从同步
               image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
               command: ["mysql", "-h{{ .Release.Name }}-1.{{ .Release.Name }}-headless"]
               args:

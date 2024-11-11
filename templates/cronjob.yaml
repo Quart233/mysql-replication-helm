@@ -27,9 +27,9 @@ spec:
           initContainers:
             - name: replication-stop # 暂停主从同步
               image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
-              command: ["mysql", "-h{{ .Release.Name }}-1.{{ .Release.Name }}-headless", "-uroot", "-e"]
+              command: ["mysqladmin", "-h{{ .Release.Name }}-1.{{ .Release.Name }}-headless", "-uroot"]
               args:
-                - stop slave;
+                - stop-slave;
               # 环境变量 
               env:
                 - name: MYSQL_PWD
@@ -64,9 +64,9 @@ spec:
 
             - name: replication-start # 恢复主从同步
               image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
-              command: ["mysql", "-h{{ .Release.Name }}-1.{{ .Release.Name }}-headless", "-uroot", "-e"]
+              command: ["mysql", "-h{{ .Release.Name }}-1.{{ .Release.Name }}-headless", "-uroot"]
               args:
-                - start slave;
+                - start-slave;
               env:
                 - name: MYSQL_PWD
                   valueFrom:

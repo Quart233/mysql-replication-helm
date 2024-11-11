@@ -392,7 +392,7 @@ mysql_serverid() {
 		cat <<- EOF > $conf/binlog.cnf					 # 写入 binlog 配置文件
 			[mysqld]
 			log_bin=/var/lib/mysql-log/mysql-bin
-			expire_logs_days=7
+			expire_logs_days=3
 		EOF
 	else
 		cat <<- EOF > $conf/relay.cnf					 # 写入 relaylog 配置文件

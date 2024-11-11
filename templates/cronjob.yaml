@@ -78,7 +78,7 @@ spec:
               image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
               command: ["bash", "-c"]
               args:
-                - mysql -h{{ .Release.Name }}-1.{{ .Release.Name }}-headless -uroot -e "DROP DATABASE IF EXISTS {{ .Values.cronjob.database }}_$(date +%a);"
+                - mysql -h{{ .Release.Name }}-1.{{ .Release.Name }}-headless -uroot -e "DROP DATABASE IF EXISTS {{ .Values.cronjob.database }}_$(date -u +%a);"
               # 环境变量 
               env:
                 - name: MYSQL_PWD
@@ -91,7 +91,7 @@ spec:
               image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
               command: ["bash", "-c"]
               args:
-                - mysql -h{{ .Release.Name }}-1.{{ .Release.Name }}-headless -uroot -e "CREATE DATABASE IF NOT EXISTS {{ .Values.cronjob.database }}_$(date +%a) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;"
+                - mysql -h{{ .Release.Name }}-1.{{ .Release.Name }}-headless -uroot -e "CREATE DATABASE IF NOT EXISTS {{ .Values.cronjob.database }}_$(date -u +%a) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;"
               # 环境变量 
               env:
                 - name: MYSQL_PWD
@@ -105,7 +105,7 @@ spec:
               image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
               command: ["bash", "-c"]
               args:
-                - mysql --verbose -h{{ .Release.Name }}-1.{{ .Release.Name }}-headless -uroot {{ .Values.cronjob.database }}_$(date +%a) < /workspace/dump.sql
+                - mysql --verbose -h{{ .Release.Name }}-1.{{ .Release.Name }}-headless -uroot {{ .Values.cronjob.database }}_$(date -u +%a) < /workspace/dump.sql
               env:
                 - name: MYSQL_PWD
                   valueFrom:

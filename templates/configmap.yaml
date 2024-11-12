@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: {{ .Release.Name }}-entrypoint
 data:
-  entrypoint: |
+  entrypoint: |-
     {{- .Files.Get "files/docker-entrypoint.sh" | nindent 4 }}
 
 ---
@@ -12,5 +12,5 @@ kind: ConfigMap
 metadata:
   name: {{ .Release.Name }}-config
 data:
-  base: |
+  base: |-
     {{- .Files.Get "files/base.cnf" | nindent 4 }}

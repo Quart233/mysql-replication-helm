@@ -339,6 +339,28 @@ docker_setup_db() {
 			docker_process_sql --database=mysql <<<"GRANT ALL ON \`${MYSQL_DATABASE//_/\\_}\`.* TO '$MYSQL_USER'@'%' ;"
 		fi
 	fi
+
+	
+	# Replication setup
+    [[ $(cat /etc/hostname) =~ -([0-9]+)$ ]] || return 1 # 获取主机名不符合 [0-9] 则 return 1
+    ordinal=${BASH_REMATCH[1]}                           # 获取容器编号
+	if [[ ${ordinal} -eq 0 ]]; then						 # 判断容器编号是否为 0
+		# 创建从库用户
+		docker_process_sql --database=mysql <<-EOSQL
+			CREATE USER 'repl'@'%' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}';
+			GRANT REPLICATION SLAVE ON *.* TO 'repl'@'%';
+		EOSQL
+	else
+		# 设置目标主库
+		docker_process_sql --database=mysql <<-EOSQL
+			CHANGE MASTER TO
+				MASTER_HOST = '{{ .Release.Name }}-0.{{ .Release.Name }}-headless',
+				MASTER_PORT = 3306,
+				MASTER_USER ='repl',
+				MASTER_PASSWORD = '{{ .Values.mysql.root }}',
+				MASTER_AUTO_POSITION = 1;
+		EOSQL
+	fi
 }
 
 _mysql_passfile() {

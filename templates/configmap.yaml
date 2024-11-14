@@ -4,7 +4,7 @@ metadata:
   name: {{ .Release.Name }}-entrypoint
 data:
   entrypoint: |-
-    {{- .Files.Get "files/docker-entrypoint.sh" | nindent 4 }}
+    {{- tpl (.Files.Get "files/docker-entrypoint.sh") . | nindent 4 }}
 
 ---
 apiVersion: v1

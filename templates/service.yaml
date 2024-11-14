@@ -6,7 +6,7 @@ spec:
   type: NodePort
   selector:
     {{- include "mysql-replication.labels" . | nindent 4 }}
-    statefulset.kubernetes.io/pod-name: foo-mysql-0
+    statefulset.kubernetes.io/pod-name: {{ .Release.Name }}-0
   ports:
     - name: mysql
       protocol: TCP
@@ -22,7 +22,7 @@ spec:
   type: NodePort
   selector:
     {{- include "mysql-replication.labels" . | nindent 4 }}
-    statefulset.kubernetes.io/pod-name: foo-mysql-1
+    statefulset.kubernetes.io/pod-name: {{ .Release.Name }}-1
   ports:
     - name: mysql
       protocol: TCP

@@ -120,9 +120,9 @@ spec:
 
           containers:
             - name: mysql
-              image: busybox:latest
+              image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
               imagePullPolicy: {{ .Values.image.pullPolicy }}
-              command: ["bash", "-c"]
+              command: ["sh", "-c"]
               args:
                 - echo
                 - "Backup {{ .Values.cronjob.database }} as {{ .Values.cronjob.database }}_$(date -u +%a) successfully."

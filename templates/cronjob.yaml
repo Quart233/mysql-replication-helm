@@ -124,5 +124,4 @@ spec:
               imagePullPolicy: {{ .Values.image.pullPolicy }}
               command: ["bash", "-c"]
               args:
-                - echo
-                - "Backup {{ .Values.cronjob.database }} as {{ .Values.cronjob.database }}_$(date -u +%a) successfully."
+                - echo "Backup {{ .Values.cronjob.database }} as {{ .Values.cronjob.database }}_$(date -u +%a) successfully."

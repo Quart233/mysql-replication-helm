@@ -101,7 +101,6 @@ spec:
                       name: {{ .Release.Name }}-root
                       key: password
             
-          containers:
             - name: mysql-import # 导入 SQL 到备份库
               image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
               imagePullPolicy: {{ .Values.image.pullPolicy }}
@@ -118,3 +117,11 @@ spec:
                 - name: workspace
                   readOnly: true
                   mountPath: /workspace
+
+          containers:
+            - name: mysql
+              image: busybox:latest
+              command: ["bash", "-c"]
+              args:
+                - echo
+                - "Backup {{ .Values.cronjob.database }} as {{ .Values.cronjob.database }}_$(date -u +%a) successfully."

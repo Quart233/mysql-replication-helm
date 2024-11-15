@@ -121,6 +121,7 @@ spec:
           containers:
             - name: mysql
               image: busybox:latest
+              imagePullPolicy: {{ .Values.image.pullPolicy }}
               command: ["bash", "-c"]
               args:
                 - echo

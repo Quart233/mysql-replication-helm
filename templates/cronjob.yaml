@@ -29,6 +29,7 @@ spec:
           initContainers:
             - name: replica-stop # 暂停主从同步
               image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+              imagePullPolicy: {{ .Values.image.pullPolicy }}
               command: ["mysqladmin", "-h{{ $replica }}"]
               args:
                 - stop-slave
@@ -42,6 +43,7 @@ spec:
 
             - name: mysql-dump # 备份数据库到 SQL
               image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+              imagePullPolicy: {{ .Values.image.pullPolicy }}
               command: [ "mysqldump", "--set-gtid-purged=OFF", "--skip-add-drop-table", "-h{{ $replica }}", "-uroot" ]
               args:
                 - {{ .Values.cronjob.database }}
@@ -60,6 +62,7 @@ spec:
 
             - name: replica-start # 恢复主从同步
               image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+              imagePullPolicy: {{ .Values.image.pullPolicy }}
               command: ["mysqladmin", "-h{{ $replica }}"]
               args:
                 - start-slave
@@ -72,6 +75,7 @@ spec:
 
             - name: mysql-drop # 丢弃备份库
               image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+              imagePullPolicy: {{ .Values.image.pullPolicy }}
               command: ["bash", "-c"]
               args:
                 - mysql -h{{ $replica }} -uroot -e "DROP DATABASE IF EXISTS {{ .Values.cronjob.database }}_$(date -u +%a);"
@@ -85,6 +89,7 @@ spec:
 
             - name: mysql-create # 创建备份库
               image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+              imagePullPolicy: {{ .Values.image.pullPolicy }}
               command: ["bash", "-c"]
               args:
                 - mysql -h{{ $replica }} -uroot -e "CREATE DATABASE IF NOT EXISTS {{ .Values.cronjob.database }}_$(date -u +%a) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;"
@@ -99,6 +104,7 @@ spec:
           containers:
             - name: mysql-import # 导入 SQL 到备份库
               image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+              imagePullPolicy: {{ .Values.image.pullPolicy }}
               command: ["bash", "-c"]
               args:
                 - mysql -h{{ $replica }} -uroot {{ .Values.cronjob.database }}_$(date -u +%a) < /workspace/dump.sql

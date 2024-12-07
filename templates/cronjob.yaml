@@ -100,7 +100,8 @@ spec:
                     secretKeyRef:
                       name: {{ .Release.Name }}-root
                       key: password
-            
+
+          containers:
             - name: mysql-import # 导入 SQL 到备份库
               image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
               imagePullPolicy: {{ .Values.image.pullPolicy }}
@@ -108,7 +109,9 @@ spec:
               args:
                 - sleep 1;
                   date;
-                  mysql -h{{ $replica }} -uroot {{ .Values.cronjob.database }}_$(date -u +%a) < /workspace/dump.sql
+                  mysql -h{{ $replica }} -uroot {{ .Values.cronjob.database }}_$(date -u +%a) < /workspace/dump.sql;
+                  echo "Backup {{ .Values.cronjob.database }} as {{ .Values.cronjob.database }}_$(date -u +%a) successfully.";
+                  date;
               env:
                 - name: MYSQL_PWD
                   valueFrom:
@@ -119,11 +122,3 @@ spec:
                 - name: workspace
                   readOnly: true
                   mountPath: /workspace
-
-          containers:
-            - name: mysql
-              image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
-              imagePullPolicy: {{ .Values.image.pullPolicy }}
-              command: ["bash", "-c"]
-              args:
-                - echo "Backup {{ .Values.cronjob.database }} as {{ .Values.cronjob.database }}_$(date -u +%a) successfully."

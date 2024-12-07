@@ -107,8 +107,8 @@ spec:
               command: ["bash", "-c"]
               args:
                 - sleep 1;
-                - date;
-                - mysql -h{{ $replica }} -uroot {{ .Values.cronjob.database }}_$(date -u +%a) < /workspace/dump.sql
+                  date;
+                  mysql -h{{ $replica }} -uroot {{ .Values.cronjob.database }}_$(date -u +%a) < /workspace/dump.sql
               env:
                 - name: MYSQL_PWD
                   valueFrom:
